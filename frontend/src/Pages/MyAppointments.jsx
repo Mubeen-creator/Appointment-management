@@ -13,7 +13,7 @@ const MyAppointments = () => {
     const fetchAppointments = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/v1/appointment/patient/my-appointments",
+          `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/appointment/patient/my-appointments`,
           { withCredentials: true }
         );
         setAppointments(data.appointments);
