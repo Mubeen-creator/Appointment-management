@@ -9,7 +9,13 @@
     "dev": "nodemon server.js",
     "test-db": "node test-db-connection.js",
     "seed-admin": "node seedAdmin.js",
-    "list-users": "node seedAdmin.js list"
+    "list-users": "node seedAdmin.js list",
+    "test-production": "node test-production-setup.js",
+    "test-api": "node ../test-api-endpoints.js",
+    "test-cors": "node test-cors.js",
+    "test-routes": "node test-root-route.js",
+    "test-routes-simple": "node test-routes-simple.js",
+    "test-all": "echo '🧪 Running all tests...' && npm run test-db && echo '✅ Database test passed' && timeout 3 && npm run test-production && npm run test-routes"
   },
   "author": "",
   "license": "ISC",

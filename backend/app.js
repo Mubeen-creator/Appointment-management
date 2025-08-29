@@ -11,8 +11,10 @@ import appointmentRouter from "./router/appointmentRouter.js";
 
 const app = express();
 
-// Load environment variables from .env file
-config({ path: "./.env" });
+// Load environment variables - Vercel handles this automatically in production
+if (process.env.NODE_ENV !== "production") {
+  config({ path: "./.env" });
+}
 
 // Validate required environment variables for MongoDB Atlas
 if (!process.env.MONGO_URI) {
@@ -44,9 +46,31 @@ app.use(
     limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit for MongoDB Atlas
   })
 );
+// Root route for health check
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Hospital Management System API is running successfully!",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development"
+  });
+});
+
+// API routes
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/appointment", appointmentRouter);
+
+// Health check route
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is healthy",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
+});
 
 dbConnection();
 
