@@ -1,16 +1,26 @@
 import mongoose from "mongoose";
 
 export const dbConnection = () => {
+  if (!process.env.MONGO_URI) {
+    console.warn("⚠️ MONGO_URI not found, skipping database connection");
+    return;
+  }
+
   mongoose
     .connect(process.env.MONGO_URI)
     .then(() => {
       console.log("✅ Connected to MongoDB Atlas successfully!");
-      console.log(`📊 Database: ${mongoose.connection.db.databaseName}`);
+      if (mongoose.connection.db) {
+        console.log(`📊 Database: ${mongoose.connection.db.databaseName}`);
+      }
     })
     .catch((err) => {
       console.error("❌ MongoDB Atlas connection error:", err.message);
       console.error("🔍 Please check your MONGO_URI and network connection");
-      process.exit(1);
+      // Don't exit in serverless environment, just log the error
+      if (process.env.NODE_ENV !== "production") {
+        process.exit(1);
+      }
     });
 
   // Handle connection events

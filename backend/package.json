@@ -15,6 +15,7 @@
     "test-cors": "node test-cors.js",
     "test-routes": "node test-root-route.js",
     "test-routes-simple": "node test-routes-simple.js",
+    "test-serverless": "node test-serverless.js",
     "test-all": "echo '🧪 Running all tests...' && npm run test-db && echo '✅ Database test passed' && timeout 3 && npm run test-production && npm run test-routes"
   },
   "author": "",
