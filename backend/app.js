@@ -50,14 +50,31 @@ app.use(
     limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit for MongoDB Atlas
   })
 );
-// Root route for health check
+// Simple welcome route
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Hospital Management System API is running successfully!",
+    message: "🏥 Welcome to Hospital Management System API!",
+    status: "Server is running",
     version: "1.0.0",
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development"
+    environment: process.env.NODE_ENV || "development",
+  });
+});
+
+// Welcome route
+app.get("/welcome", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Welcome to ZeeCare Hospital Management System",
+    description: "Your trusted healthcare management solution",
+    features: [
+      "Patient Management",
+      "Appointment Scheduling",
+      "Medical Records",
+      "Staff Management",
+    ],
+    version: "1.0.0",
   });
 });
 
@@ -72,11 +89,20 @@ app.get("/health", (req, res) => {
     success: true,
     message: "Server is healthy",
     uptime: process.uptime(),
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
-dbConnection();
+// Initialize database connection with error handling
+try {
+  if (process.env.MONGO_URI) {
+    dbConnection();
+  } else {
+    console.warn("⚠️ MONGO_URI not found, database features will be limited");
+  }
+} catch (error) {
+  console.error("❌ Database connection error:", error.message);
+}
 
 app.use(errorMiddleware);
 export default app;
