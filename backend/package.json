@@ -32,5 +32,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.1",
     "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "@types/express-fileupload": "^1.5.1"
   }
 }

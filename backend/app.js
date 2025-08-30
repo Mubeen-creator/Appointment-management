@@ -19,12 +19,16 @@ if (process.env.NODE_ENV !== "production") {
 // Validate required environment variables for MongoDB Atlas
 if (!process.env.MONGO_URI) {
   console.error("❌ MONGO_URI is not defined in environment variables");
-  process.exit(1);
+  if (process.env.NODE_ENV !== "production") {
+    process.exit(1);
+  }
 }
 
 if (!process.env.JWT_SECRET_KEY) {
   console.error("❌ JWT_SECRET_KEY is not defined in environment variables");
-  process.exit(1);
+  if (process.env.NODE_ENV !== "production") {
+    process.exit(1);
+  }
 }
 
 app.use(
